@@ -1,0 +1,9 @@
+protobuf==3.12.4
+python-jose[cryptography]
+pydantic
+python-multipart
+construct
+chirpstack-api==3.11.1
+paho-mqtt
+grpcio==1.50.0
+psycopg2-binary

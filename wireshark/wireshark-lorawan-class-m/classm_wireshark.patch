@@ -1,0 +1,177 @@
+diff --git a/epan/dissectors/packet-lorawan.c b/epan/dissectors/packet-lorawan.c
+index c8b63c65a8..18bef9a77a 100644
+--- a/epan/dissectors/packet-lorawan.c
++++ b/epan/dissectors/packet-lorawan.c
+@@ -126,6 +126,17 @@ static int hf_lorawan_beacon_rfu2_type = -1;
+ static int hf_lorawan_beacon_crc2_type = -1;
+ static int hf_lorawan_beacon_crc2_status_type = -1;
+ 
++/* Class-M related hf */
++static int hf_lorawan_classm_type = -1;
++static int hf_lorawan_classm_devaddr_type = -1;
++static int hf_lorawan_classm_timestamp_type = -1;
++static int hf_lorawan_classm_phase_type = -1;
++static int hf_lorawan_classm_mmtype_type = -1;
++static int hf_lorawan_classm_payload_type = -1;
++
++
++
++
+ static int * const hfx_lorawan_mac_command_link_check_ans[] = {
+ 	&hf_lorawan_mac_command_up_link_adr_ans_txpower_type,
+ 	&hf_lorawan_mac_command_up_link_adr_ans_datarate_type,
+@@ -194,6 +205,7 @@ static gint ett_lorawan_frame_header_control = -1;
+ static gint ett_lorawan_frame_payload_decrypted = -1;
+ static gint ett_lorawan_beacon = -1;
+ static gint ett_lorawan_beacon_gwspecific = -1;
++static gint ett_lorawan_classm = -1;
+ 
+ #define LORAWAN_MAC_FTYPE_MASK						0xE0
+ #define LORAWAN_MAC_FTYPE(ftype)					(((ftype) & LORAWAN_MAC_FTYPE_MASK) >> 5)
+@@ -201,13 +213,25 @@ static gint ett_lorawan_beacon_gwspecific = -1;
+ #define LORAWAN_MAC_FTYPE_JOINREQUEST					0
+ #define LORAWAN_MAC_FTYPE_JOINACCEPT					1
+ #define LORAWAN_MAC_FTYPE_UNCONFIRMEDDATAUP				2
+-#define LORAWAN_MAC_FTYPE_UNCONFIRMEDDATADOWN				3
++#define LORAWAN_MAC_FTYPE_UNCONFIRMEDDATADOWN			3
+ #define LORAWAN_MAC_FTYPE_CONFIRMEDDATAUP				4
+ #define LORAWAN_MAC_FTYPE_CONFIRMEDDATADOWN				5
+ #define LORAWAN_MAC_FTYPE_RFU						6
+ #define LORAWAN_MAC_FTYPE_PROPRIETARY					7
+ #define LORAWAN_MAC_BEACON						0xFFF0
+ 
++#define LORAWAN_CLASSM_MMTYPE_MASK						0xFF
++
++#define LORAWAN_CLASSM_MMTYPE_CRWBEACON					0x81
++#define LORAWAN_CLASSM_MMTYPE_SYNCBEACON					0x80
++#define LORAWAN_CLASSM_MMTYPE_ROUTINGBEACON					0x82
++#define LORAWAN_CLASSM_MMTYPE_SENDINGDATA					0x83
++#define LORAWAN_CLASSM_MMTYPE_ABPREGACK					0x84
++#define LORAWAN_CLASSM_MMTYPE_ABPREGREQ					0x85
++#define LORAWAN_CLASSM_MMTYPE_MSGTHISNODE					0x32
++#define LORAWAN_CLASSM_MMTYPE_MSGFORWARD					0x33
++
++
+ #define LORAWAN_MAC_RFU_MASK						0x1C
+ 
+ #define LORAWAN_MAC_MAJOR_MASK						0x03
+@@ -307,6 +331,18 @@ static const value_string lorawan_ftypenames[] = {
+ 	{ 0, NULL }
+ };
+ 
++static const value_string lorawan_classm_mmtypenames[] = {
++	{ LORAWAN_CLASSM_MMTYPE_CRWBEACON, "Common Receive Window Beacon" },
++	{ LORAWAN_CLASSM_MMTYPE_SYNCBEACON, "Synchronization Beacon" },
++	{ LORAWAN_CLASSM_MMTYPE_ROUTINGBEACON, "Routing Beacon" },
++	{ LORAWAN_CLASSM_MMTYPE_SENDINGDATA, "Sending Data" },
++	{ LORAWAN_CLASSM_MMTYPE_ABPREGACK, "ABP Registration Acknowledgement" },
++	{ LORAWAN_CLASSM_MMTYPE_ABPREGREQ, "ABP Registration Request" },
++	{ LORAWAN_CLASSM_MMTYPE_MSGTHISNODE, "Message For This Node" },
++	{ LORAWAN_CLASSM_MMTYPE_MSGFORWARD, "Message To Forward" },
++	{ 0, NULL }
++};
++
+ static const value_string lorawan_majornames[] = {
+ 	{ LORAWAN_MAC_MAJOR_R1,				"LoRaWAN R1" },
+ 	{ 0, NULL }
+@@ -968,6 +1004,32 @@ dissect_lorawan_join_request(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree *
+ 
+ 	return tvb_captured_length(tvb);
+ }
++static int hf_lorawan_classm_devaddr_type = -1;
++static int hf_lorawan_classm_timestamp_type = -1;
++static int hf_lorawan_classm_phase_type = -1;
++static int hf_lorawan_classm_mmtype_type = -1;
++
++static int
++dissect_lorawan_classm(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree *tree _U_)
++{
++	proto_item *tf;
++	proto_tree *field_tree;
++	gint32 current_offset = 1;
++
++	tf = proto_tree_add_item(tree, hf_lorawan_classm_type, tvb, current_offset, 11, ENC_NA);
++	field_tree = proto_item_add_subtree(tf, ett_lorawan_classm);
++	proto_tree_add_item(field_tree, hf_lorawan_classm_devaddr_type, tvb, current_offset, 4, ENC_LITTLE_ENDIAN);
++	current_offset += 4;
++	proto_tree_add_item(field_tree, hf_lorawan_classm_timestamp_type, tvb, current_offset, 4, ENC_LITTLE_ENDIAN);
++	current_offset += 4;
++	proto_tree_add_item(field_tree, hf_lorawan_classm_phase_type, tvb, current_offset, 2, ENC_LITTLE_ENDIAN);
++	current_offset += 2;
++	proto_tree_add_item(field_tree, hf_lorawan_classm_mmtype_type, tvb, current_offset, 1, ENC_LITTLE_ENDIAN);
++	current_offset += 1;
++	proto_tree_add_item(field_tree, hf_lorawan_classm_payload_type, tvb, current_offset, tvb_captured_length_remaining(tvb, current_offset), ENC_NA);
++
++	return tvb_captured_length(tvb);
++}
+ 
+ static int
+ dissect_lorawan_join_accept(tvbuff_t *tvb, packet_info *pinfo _U_, proto_tree *tree _U_)
+@@ -1190,8 +1252,11 @@ dissect_lorawan(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *d
+ 		case LORAWAN_MAC_FTYPE_UNCONFIRMEDDATADOWN:
+ 		case LORAWAN_MAC_FTYPE_CONFIRMEDDATADOWN:
+ 			return dissect_lorawan_data(tvb, pinfo, lorawan_tree, false /*downlink*/);
++			
++		case LORAWAN_MAC_FTYPE_PROPRIETARY:
++			return dissect_lorawan_classm(tvb, pinfo, lorawan_tree);
+ 
+-		default: /* LORAWAN_MAC_FTYPE_RFU or LORAWAN_MAC_FTYPE_PROPRIETARY */
++		default: /* LORAWAN_MAC_FTYPE_RFU */
+ 			proto_tree_add_item(lorawan_tree, hf_lorawan_frame_payload_type, tvb, current_offset, tvb_captured_length_remaining(tvb, current_offset), ENC_NA);
+ 			return tvb_captured_length(tvb);
+ 	}
+@@ -1801,6 +1866,46 @@ proto_register_lorawan(void)
+ 		VALS(proto_checksum_vals), 0x0,
+ 		NULL, HFILL }
+ 	},
++	
++	/* Class-M related */
++	
++	{ &hf_lorawan_classm_type,
++		{ "Class-M Frame", "lorawan.classm",
++		FT_NONE, BASE_NONE,
++		NULL, 0x0,
++		NULL, HFILL }
++	},
++	{ &hf_lorawan_classm_devaddr_type,
++		{ "Class-M Sender Address", "lorawan.classm.senderaddr",
++		FT_UINT32, BASE_HEX,
++		NULL, 0x0,
++		"[SenderAddr] Class-M Sender Address", HFILL }
++	},
++	{ &hf_lorawan_classm_timestamp_type,
++		{ "Class-M Timestamp", "lorawan.classm.timestamp",
++		FT_UINT32, BASE_DEC,
++		NULL, 0x0,
++		"[Timestamp] Class-M Global Timestamp", HFILL }
++	},
++	{ &hf_lorawan_classm_phase_type,
++		{ "Class-M Phase", "lorawan.classm.phase",
++		FT_UINT16, BASE_DEC,
++		NULL, 0x0,
++		"[Phase] Class-M Phase", HFILL }
++	},
++	{ &hf_lorawan_classm_mmtype_type,
++		{ "Class-M Message Type", "lorawan.classm.mmtype",
++		FT_UINT8, BASE_DEC,
++		VALS(lorawan_classm_mmtypenames), LORAWAN_CLASSM_MMTYPE_MASK,
++		"[MMType] Class-M Message Type", HFILL }
++	},
++	{ &hf_lorawan_classm_payload_type,
++		{ "Class-M Frame Payload", "lorawan.classm.payload",
++		FT_BYTES, BASE_NONE,
++		NULL, 0x0,
++		"[ClassMPayload] Class-M Frame Payload", HFILL }
++	},
++	
+ 	};
+ 
+ 	/* Setup protocol subtree array */
+@@ -1821,6 +1926,7 @@ proto_register_lorawan(void)
+ 		&ett_lorawan_frame_payload_decrypted,
+ 		&ett_lorawan_beacon,
+ 		&ett_lorawan_beacon_gwspecific,
++		&ett_lorawan_classm,
+ 	};
+ 
+ 	static ei_register_info ei[] = {

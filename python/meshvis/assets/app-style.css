@@ -1,0 +1,179 @@
+/* Reset some default styles */
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: Verdana;
+}
+
+
+/* Gutter styles */
+
+.gutter {
+    background-color: #FFF;
+    /* Adjust the color as needed, default: #ccc */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.gutter-horizontal {
+    cursor: ew-resize;
+    /* Change the cursor on hover to indicate resizing */
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAeCAYAAAAGos/EAAAAGUlEQVQY02M8c+bMfwYGBgYmBpyAccSoAQAGPxsx9oBfvwAAAABJRU5ErkJggg==');
+}
+
+.gutter-vertical {
+    cursor: ns-resize;
+    /* Change the cursor on hover to indicate resizing */
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAACCAYAAABPJGxCAAAAIElEQVQI12M8c+bMfwYGBgYTExNGBgYGBnrxmRgGCAAAg0ofZ0Nov3gAAAAASUVORK5CYII=');
+}
+
+.modebar-img {
+    width: 1em;
+    height: 1em;
+    position: relative;
+    top: 1px;
+    opacity: 0.6;
+}
+
+.modebar-img:hover {
+    opacity: 1 !important;
+}
+
+
+/* Basic styling for the app container */
+
+#app {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+}
+
+
+/* Styles for the menu bar on the left side */
+
+#app-menu-bar {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    background-color: #333;
+}
+
+#app-menu-content {
+    color: white;
+    max-width: 30vw;
+    padding: 10px;
+    padding-right: 0px;
+    overflow: hidden;
+    transition: all 0.25s;
+    white-space: nowrap;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+#debug-menu-flex {
+    flex: 1 1 auto;
+}
+
+#debug-menu-content {
+    margin-bottom: 20px;
+}
+
+#app-menu-content.hidden {
+    max-width: 0px !important;
+    padding: 0px;
+}
+
+#app-menu-content H3 {
+    margin-top: 0px;
+    text-align: center;
+}
+
+#app-menu-button {
+    cursor: pointer;
+    width: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: exclusion;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAApCAYAAAAWNlirAAAANUlEQVQ4y2NgwAL+///fgFXw/////7EKokggC8KNIl4QrzEkSxLnD7w+pxcYDfbRYKd7sAMAyzRmwAiMyAwAAAAASUVORK5CYII=');
+    transform: scaleX(1);
+    transition: transform 0.25s;
+}
+
+#app-menu-button.hidden {
+    transform: scaleX(-1);
+}
+
+
+/* Styling for the windows container */
+
+#app-window {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 1%;
+    overflow: clip;
+}
+
+
+/* Basic style for each window */
+
+.app-windows {
+    flex-grow: 1;
+    transition: width 0.25s, height 0.25s;
+    overflow: hidden;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+
+/* Styling for the top container */
+
+#app-window-top {
+    display: flex;
+    flex-direction: row;
+}
+
+
+/* Additional styling for specific windows */
+
+#app-window-top-left {
+    background-color: #f0f0f0;
+}
+
+#app-window-top-right {
+    background-color: #e0e0e0;
+}
+
+#app-window-bottom {
+    background-color: #d0d0d0;
+}
+
+#refresh-checkbox,
+#refresh-checkbox>* {
+    display: inline !important;
+}
+
+#refresh-period {
+    display: inline;
+    max-width: 50px;
+}
+
+
+/* Class for disabling transitions when mouse dragging */
+
+.no-transition {
+    transition: none !important;
+}
+
+
+/* Topology component texts */
+
+g.textpoint {
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #fff, -1px 1px 1px #fff, -1px -1px 1px #fff, 1px -1px 1px #fff;
+}

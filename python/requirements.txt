@@ -1,0 +1,2 @@
+-r basic_mesh_python/requirements.md
+-r lora_radio_sim/REQUIREMENTS.txt

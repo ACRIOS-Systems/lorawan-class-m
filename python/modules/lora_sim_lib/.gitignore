@@ -1,0 +1,8 @@
+# system temporary files
+~$*
+*~
+.#*
+
+# python files
+__pycache__/
+**/__pycache__/

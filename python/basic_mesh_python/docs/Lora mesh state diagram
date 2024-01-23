@@ -1,0 +1,70 @@
+LORA MESH STATE DIAGRAM:
+
+This project comprises two main components: a software layer, implemented as a Python-based mesh, and a hardware layer, realized through microcontroller code that simulates radio behavior. The software layer, running on a computer, communicates with the hardware layer via the UART interface. This communication allows us to control the microcontrollers using a set of commands, which the microcontroller interprets as radio commands. Additionally, instead of using physical radios, a LoRa simulator written in Python can also be employed with the Python mesh. The goal of this project is to simulate a LoRa mesh network for testing, evaluation, and other purposes, in preparation for the development of a hardware-based mesh.
+
+The mesh comprises various components, most important ones are: -Event queues where each node stores the upcoming events. These events are usually the IRQ messages received from the radio(microcontroller) or self-posted events that indicate the start of a certain event like beacon transmission. -Lists of each node's Parents, Children and Potential parents-node is still choosing wether to connect to it or in the process of connection or potential Children - node is waiting for a confirmation acknowledge for a new child.
+
+The mesh encompasses several components, with the primary ones including:
+
+    Event Queue: This is a repository where each node stores its upcoming events. Typically, these events consist of IRQ messages received from the radio (microcontroller) or self-triggered events, signifying the initiation of specific actions, such as beacon transmission.
+
+    Lists: Each node manages several lists, including Parents, Children, Potential Parents, and Potential Children. Potential Parents represent nodes with which our node is still waiting on establishing a connection with, while Potential Children are nodes awaiting connection acknowledgments to join the network. The lists of these neighboring nodes includes their essential data, including their Device Address, Frequency, Spreading Factor, operating time slot, a connection counter for identifying unresponsive nodes, their individual data queue, and an 'AccessNodes' list used for packet routing.
+
+    Data Queues: Each node contains an individual data queue for every one of its parents and children. These data queues serve as storage for data to be transmitted across the network, ready to be sent out during the next beacon transmission cycle.
+
+idleState
+
+Two types of nodes can operate within the LoRa mesh network. The first type is a Hardcoded Parent, serving as the initial parent with hardcoded attributes such as device address, operating radio frequency, spreading factor, and a network depth of 0. The Hardcoded Parent begins in the 'idleState' state, where it determines its operating radio frequency and spreading factor, calculates beacon transmission timing, and stores the beacon transmission event. Unlike other nodes, the Hardcoded Parent then transitions to the 'connectedIdle' state. If the node is not a Hardcoded Parent, it configures the radio frequency and spreading factor, and starts searching for the Parent node. It transitiones to the 'searchParent' state.
+
+searchParent
+
+When a node detects a CRW (Common Receive Window) beacon, it adds the sending node to a list of Potential Parents. It also stores the received time slot and adjusts or adds the priority of the Potential Parent based on various information. This information may include some information transmitted by the CRW beacon like the number of children the parent node already has and the network depth, and/or other information such as the signal strength to the parent. If the total search for the Potential Parents was extensive enough and this Potential Parent node has the biggest prority of all the parents in the near proximity, the node accepts it as a Parent node and transmits the OTAA registration request - transitiones to the transmittingOTAARegReq state.
+
+transmittingOTAARegReq
+
+When the request is transmitted and the mesh receives the TX_DONE response from the radio interrupt, the node removes all the currently queued events from its event queue and queues the reception at the next Potential Parent beacon. It transitions to the waitForPotentialParentWindow state.
+
+waitForPotentialParentWindow && waitForRequestConnectionAnswer
+
+In this state the node waits for the time slot in which the selected Potential Parent transmits its beacons. When the time arrives, the node opens its receiving window and waits for the reception of the package - waiting for an OTAA acknowledgement to join the network. This acknowledgement may take some time to receive, as it has to travel all the way to Hardcoded Parent and back down through the network tree. This is why in the case of a wrong packet the node will just reschedule the event. The rescheduling occurs a total of 3 times multiplied by the network depth we are connecting to (Potential Parent's network's depth + 1), before the Potential parent is finally dropped and node transitions back to the 'idleState' state. If the OTAA acknowledgement is received, the node executes the following tasks:
+1.Remove all of the the Potential Parents and add this node on a list of Parents.
+2.Synchronise the GPS time to the recevied Parent's GPS time.
+3.Configure my own address and other settings received from the packet.
+4.Encryption key derivation.
+5.Push new events - Parent beacon event, this node beacon event.
+After this, the node transitiones to the 'connectedIdle' state.
+
+connectedIdle
+
+When a node is in the connected and idling state, it remains here until a specific event occurs. The node has four possible actions, determined by the type of event that occurs. It can transmit a Synchronising beacon/CRW beacon or it can open a receiving window for either one of its Childred's beacon or its Parent's beacon.
+
+transmittingCRWBeacon && transmittingCRWBeacon
+
+Before the node transitiones to one of these states the node builds the next beacon packet for transmission, it checkes all the data from all its children and a parent and aggregates all the data frames to the packet. If there are any OTAA registration acknowledgment packets for any of the Potential Children, the node moves these Potential Children to a list of Children and appends a time slot for that child to the packet. It then schedules an event for a reception of this child's beacon in the next epoch.
+If the beacon is a CRW beacon, the node transitiones to the 'receivingChildNodes' state after the transmission. Here it consecutively opens five reception windows to detect any potential children attempting to connect to the network. If any OTAA registration requests are detected, the node queues them to the parent's data queue, as they need to travel to the Hardcoded Parent for confirmation. After this the node schedules another beacon event for the next epoch and returns to the 'connectedIdle' state.
+
+waitForChildBeacon && waitForParentBeacon
+
+When either a Child or Parent beacon reception event is generated, the node transitiones to the corresponding state based on the event type. If it's a Child beacon event, the node confirms the detection of the child and reschedules the same event for the next epoch. If it's a Parent beacon event, the node performs the same action but also synchronizes its GPS time with the parent.
+From both states, the node proceeds to parse the data received in the packet. There are five main possibilities for these packets:
+The packet is a child confirmation for a Potential Child, a message to forward through the network (to either a Parent or one of the Children), an OTAA registration request from a Potential Child, or an OTAA registration acknowledgment for a Potential Child. In these cases, the frames are passed to the routing algorithm, which determines the appropriate data queues for the next hop of these frames.
+If the data is intended for this node, it is passed to the application layer.
+
+
+
+subtopics besides state diagram:
+-how the microcontroller-side code works
+-how timestamp (clock) are determined for either simulator/HW node
+-packets definition and how are they parsed
+-routing algorithm
+-time slots and time managment by the mesh
+-encryption + key derivation
+-how does the OTAARegReq transmission work?
+
+-other things still TODO
+
+
+
+
+
+

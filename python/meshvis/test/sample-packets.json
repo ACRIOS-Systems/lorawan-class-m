@@ -1,0 +1,56 @@
+[{
+        "data": [
+            "aim",
+            "storm",
+            "openings"
+        ],
+        "direction": "Tx",
+        "endTime": 41.372241399665285,
+        "reporterEUI": "00:00:00:00:00:00:00:00",
+        "startTime": 41.33778620570858
+    },
+    {
+        "data": [
+            "conditioning",
+            "lamb",
+            "forecasts"
+        ],
+        "direction": "Rx",
+        "endTime": 41.372241399665285,
+        "reporterEUI": "00:00:00:00:00:00:00:01",
+        "startTime": 41.33778620570858
+    },
+    {
+        "data": [
+            "conditioning",
+            "lamb",
+            "forecasts"
+        ],
+        "direction": "Rx",
+        "endTime": 41.372241399665285,
+        "reporterEUI": "00:00:00:00:00:00:00:02",
+        "startTime": 41.33778620570858
+    },
+    {
+        "data": [
+            "door",
+            "flower",
+            "voltage"
+        ],
+        "direction": "Tx",
+        "endTime": 42.83140835161654,
+        "reporterEUI": "00:00:00:00:00:00:00:02",
+        "startTime": 42.7578452925583
+    },
+    {
+        "data": [
+            "window",
+            "light",
+            "cupboard"
+        ],
+        "direction": "Rx",
+        "endTime": 42.83140835161654,
+        "reporterEUI": "00:00:00:00:00:00:00:03",
+        "startTime": 42.7578452925583
+    }
+]

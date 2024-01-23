@@ -1,0 +1,7 @@
+#!/bin/bash
+
+python3 hardcoded_parent.py 0 0 0 0 aabbccddeeff0001 0 0 0 None SIGINT &
+python3 main.py 0 0 0 0 aabbccddeeff0002 0 0 0 /dev/ttyACM0 &
+python3 main.py 0 0 0 0 aabbccddeeff0003 0 0 0 /dev/ttyACM1 
+#python3 main.py 0 0 0 0 aabbccddeeff0004 0 0 0 None &
+#python3 main.py 0 0 0 0 aabbccddeeff0005 0 0 0 None

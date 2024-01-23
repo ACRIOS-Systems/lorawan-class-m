@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "../modules/lora_sim_lib",
+        "../modules/ns_chirpstack3_api",
+    ],
+}

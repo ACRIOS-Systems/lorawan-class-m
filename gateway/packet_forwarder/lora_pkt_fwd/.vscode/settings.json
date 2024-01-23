@@ -1,0 +1,10 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/jakral/git/cocos/packet_forwarder/lora_pkt_fwd",
+            "binaryPath": "/home/jakral/git/cocos/packet_forwarder/lora_pkt_fwd/lora_pkt_fwd",
+            "binaryArgs": [],
+            "includePath": ["/home/jakral/git/cocos/packet_forwarder/lora_pkt_fwd/inc"],
+        }
+    ]
+}

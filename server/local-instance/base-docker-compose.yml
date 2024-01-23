@@ -1,0 +1,240 @@
+version: "3"
+
+services:
+
+  sqlpad:
+    image: sqlpad/sqlpad:5
+    hostname: 'sqlpad'
+    ports:
+      - 127.0.0.1:8081:3000
+    expose:
+      - "3000"
+    environment:
+      SQLPAD_ADMIN: 'admin@acrios.com'
+      SQLPAD_ADMIN_PASSWORD: '${SQLPAD_PASSWORD}'
+      SQLPAD_APP_LOG_LEVEL: debug
+      SQLPAD_WEB_LOG_LEVEL: warn
+      SQLPAD_SEED_DATA_PATH: /etc/sqlpad/seed-data
+      SQLPAD_CONNECTIONS__pgdemo__name: Postgres demo
+      SQLPAD_CONNECTIONS__pgdemo__driver: postgres
+      SQLPAD_CONNECTIONS__pgdemo__host: postgresql
+      SQLPAD_CONNECTIONS__pgdemo__database: chirpstack_ns
+      SQLPAD_CONNECTIONS__pgdemo__username: chirpstack_ns
+      SQLPAD_CONNECTIONS__pgdemo__password: chirpstack_ns
+      SQLPAD_CONNECTIONS__pgdemo__multiStatementTransactionEnabled: 'true'
+      SQLPAD_CONNECTIONS__pgdemo__idleTimeoutSeconds: 86400
+    volumes:
+      - ./data/seed-data:/etc/sqlpad/seed-data
+    networks:
+      - "local"
+      - "proxy"
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.sqlpad_${INST_NET_NUM}.rule=Host(`${SQLPAD_URL}`)"
+      - "traefik.http.routers.sqlpad_${INST_NET_NUM}.entrypoints=web"
+#      - "traefik.http.routers.sqlpad_${INST_NET_NUM}.middlewares=redir-https@file"
+#      - "traefik.http.routers.sqlpad_${INST_NET_NUM}-https.EntryPoints=websecure"
+#      - "traefik.http.routers.sqlpad_${INST_NET_NUM}-https.rule=Host(`${SQLPAD_URL}`)"
+#      - "traefik.http.routers.sqlpad_${INST_NET_NUM}-https.tls.certresolver=letsencrypt"
+#      - "traefik.http.routers.sqlpad_${INST_NET_NUM}-https.tls=true"
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+
+  chirpstack-network-server:
+    image: chirpstack/chirpstack-network-server:3.15.0
+    restart: unless-stopped
+    volumes:
+      - ./configuration/chirpstack-network-server:/etc/chirpstack-network-server
+        # for replacing ns binary for testing of NS hacking      - /home/ok2nmz/CHIRPSTACK/chirpstack-network-server/build/chirpstack-network-server:/usr/bin/chirpstack-network-server
+
+    environment:
+       # set JWT secret used for generation of JWT token
+       - APPLICATION_SERVER__EXTERNAL_API__JWT_SECRET=acriossecret${INST_NET_NUM}
+       - POSTGRESQL__DSN=postgres://chirpstack_ns:chirpstack_ns@172.${INST_NET_NUM}.255.101/chirpstack_ns?sslmode=disable
+       - REDIS__URL=redis://172.${INST_NET_NUM}.255.102:6379
+       - NETWORK_SERVER__GATEWAY__BACKEND__MQTT__SERVER=tcp://172.${INST_NET_NUM}.255.220:1883
+       - JOIN_SERVER__DEFAULT__SERVER=http://172.${INST_NET_NUM}.255.254:8003
+       - GEOLOCATION_SERVER__SERVER=172.${INST_NET_NUM}.255.103:8005
+    networks:
+        local:
+            ipv4_address: 172.${INST_NET_NUM}.255.252
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+
+  chirpstack-application-server:
+    image: chirpstack/chirpstack-application-server:3.17.0
+    restart: unless-stopped
+    ports:
+       - 127.0.0.1:8080:8080
+    expose:
+       - "8080"
+    environment:
+       # set JWT secret used for generation of JWT token
+       - APPLICATION_SERVER__EXTERNAL_API__JWT_SECRET=acriossecret${INST_NET_NUM}
+       - POSTGRESQL__DSN=postgres://chirpstack_as:chirpstack_as@172.${INST_NET_NUM}.255.101/chirpstack_as?sslmode=disable
+       - REDIS__URL=redis://172.${INST_NET_NUM}.255.102:6379
+       - APPLICATION_SERVER__INTEGRATION__MQTT__SERVER=tcp://172.${INST_NET_NUM}.255.220:1883
+       - APPLICATION_SERVER__API__PUBLIC_HOST=172.${INST_NET_NUM}.255.254:8001
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+
+      - "traefik.http.routers.ns2web_${INST_NET_NUM}-http.rule=Host(`${AS_URL}`)"
+      - "traefik.http.routers.ns2web_${INST_NET_NUM}-http.EntryPoints=web"
+ #     - "traefik.http.routers.ns2web_${INST_NET_NUM}-http.middlewares=redir-https@file"
+ #     - "traefik.http.services.ns2web_${INST_NET_NUM}-httpsvc.loadbalancer.server.scheme=http"
+ #     - "traefik.http.routers.ns2web_${INST_NET_NUM}-http.service=ns2web_${INST_NET_NUM}-httpsvc"
+      # Priority by order
+#      - "traefik.http.routers.ns2web_${INST_NET_NUM}-https.rule=Host(`${AS_URL}`) && (PathPrefix(`/api/gateways`) || PathPrefix(`/api/devices`))"
+#      - "traefik.http.routers.ns2web_${INST_NET_NUM}-https.EntryPoints=websecure"
+#      - "traefik.http.routers.ns2web_${INST_NET_NUM}-https.tls.certresolver=letsencrypt"
+#      - "traefik.http.routers.ns2web_${INST_NET_NUM}-https.tls=true"
+#      - "traefik.http.routers.ns2web_${INST_NET_NUM}-https.service=ns2web_${INST_NET_NUM}-httpssvc"
+#      - "traefik.http.services.ns2web_${INST_NET_NUM}-httpssvc.loadbalancer.server.scheme=http"
+
+ #     - "traefik.http.routers.ns2webh2c_${INST_NET_NUM}-https.rule=Host(`${AS_URL}`)"
+ #     - "traefik.http.routers.ns2webh2c_${INST_NET_NUM}-https.EntryPoints=websecure"
+ #     - "traefik.http.routers.ns2webh2c_${INST_NET_NUM}-https.tls.certresolver=letsencrypt"
+ #     - "traefik.http.routers.ns2webh2c_${INST_NET_NUM}-https.tls=true"
+ #     - "traefik.http.routers.ns2webh2c_${INST_NET_NUM}-https.service=ns2h2cwebsvc_${INST_NET_NUM}"
+ #     - "traefik.http.services.ns2h2cwebsvc_${INST_NET_NUM}.loadbalancer.server.scheme=h2c"
+    networks:
+        local:
+            ipv4_address: 172.${INST_NET_NUM}.255.254
+        proxy:
+
+    volumes:
+      - ./configuration/chirpstack-application-server:/etc/chirpstack-application-server
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+
+  chirpstack-gateway-bridge:
+    image: chirpstack/chirpstack-gateway-bridge:3.13
+    restart: unless-stopped
+    ports:
+       - "0.0.0.0:1700:1700/udp"
+    expose:
+       - "1700/udp"
+    environment:
+       - INTEGRATION__MQTT__AUTH__GENERIC__SERVERS=tcp://172.${INST_NET_NUM}.255.220:1883
+    networks:
+        local:
+            ipv4_address: 172.${INST_NET_NUM}.255.253
+    volumes:
+      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+
+  postgresql:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    ports:
+       - 127.0.0.1:5432:5432
+    environment:
+      - POSTGRES_PASSWORD=loraserver-devel-pwd
+      - POSTGRES_USER=loraserver-devel
+    volumes:
+      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - ./data/postgre:/var/lib/postgresql/data
+    networks:
+        local:
+            ipv4_address: 172.${INST_NET_NUM}.255.101
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+  redis:
+    image: redis:5-alpine
+    restart: unless-stopped
+    volumes:
+      - ./data/redis:/data
+    networks:
+        local:
+            ipv4_address: 172.${INST_NET_NUM}.255.102
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+  mosquitto:
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    ports:
+       - 127.0.0.1:1883:1883
+
+    expose:
+       - "1883"
+    volumes:
+      - ./configuration/mosquitto/:/mosquitto/config/
+    networks:
+        local:
+            ipv4_address: 172.${INST_NET_NUM}.255.220
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+  wireguard:
+    image: jankralx/acrios-wireguard-ssh
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - SERVERURL=${VPN_URL} #optional
+      - SERVERPORT=${VPN_PORT} #optional
+      - PEERS=0 #optional
+      - PEERDNS=auto #optional
+      - INTERNAL_SUBNET=10.${INST_NET_NUM}.255.0 #optional
+    volumes:
+      - ./configuration/wireguard/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - ${VPN_PORT}:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+
+    networks:
+        local:
+            ipv4_address: 172.${INST_NET_NUM}.255.250
+    logging:
+        driver: "local"
+        options:
+            max-file: "2"
+            max-size: "10m"
+
+networks:
+  local:
+    external: False
+    ipam:
+      config:
+        - subnet: 172.${INST_NET_NUM}.255.0/24
+
+  proxy:
+    external: True
+

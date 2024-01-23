@@ -1,0 +1,30 @@
+FROM golang:1.18-alpine
+
+ENV PROJECT_PATH=/chirpstack-network-server
+ENV PATH=$PATH:$PROJECT_PATH/build
+ENV CGO_ENABLED=0
+ENV GO_EXTRA_BUILD_ARGS="-a -installsuffix cgo"
+
+RUN apk add --no-cache ca-certificates tzdata make git bash protobuf rpm redis
+
+RUN git clone https://github.com/protocolbuffers/protobuf.git /protobuf
+
+RUN mkdir -p $PROJECT_PATH
+COPY . $PROJECT_PATH
+WORKDIR $PROJECT_PATH
+
+RUN make dev-requirements
+
+EXPOSE 4000
+
+# from https://github.com/go-delve/delve/releases?page=2 , must not use too new version or conflict with too old golang arises
+RUN go install -ldflags "-s -w -extldflags '-static'" github.com/go-delve/delve/cmd/dlv@v1.8.1
+
+#ENV GO111MODULE=off
+
+RUN pwd
+RUN ls -al
+#RUN make build
+CMD ["/bin/sh","-c","./debug.sh"]
+
+#CMD [ "/go/bin/dlv", "--listen=:4000", "--headless=true", "--log=true", "--accept-multiclient", "--api-version=2", "exec", "build/chirpstack-network-server" ]

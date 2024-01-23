@@ -1,0 +1,19 @@
+http:
+  middlewares:
+#    redir-https:
+#      redirectScheme:
+#        scheme: https
+#        permanent: true
+    redir-dashboard:
+      redirectRegex:
+        regex: "^https://traefik.localhost/$"
+        replacement: "https://traefik.localhost/dashboard/"
+    replacepath-dashboard:
+      replacePathRegex:
+        regex: "^https://traefik.localhost/$"
+        replacement: "https://traefik.localhost/dashboard/#"
+    dashboard-auth:
+      basicAuth:
+        users:
+          - "admin:$2y$10$N.w2zpBX4by7jYi9lUyQceRqmSHrQPD6hdzntm7HS./qsY4FNMzc2"
+#admin:admin

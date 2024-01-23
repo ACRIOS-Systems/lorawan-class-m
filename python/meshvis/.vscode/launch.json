@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "MeshVis without debug",
+            "type": "python",
+            "request": "launch",
+            "program": "App.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "-p", "8050",
+            ]
+        },
+        {
+            "name": "Debug MeshVis",
+            "type": "python",
+            "request": "launch",
+            "program": "App.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "-d",
+                "-p", "8050",
+            ]
+        },
+        {
+            "name": "Help MeshVis",
+            "type": "python",
+            "request": "launch",
+            "program": "App.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "-h",
+            ]
+        }
+    ]
+}

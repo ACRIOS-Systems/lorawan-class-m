@@ -1,0 +1,13 @@
+# Dynamic Configuration
+http:
+  routers:
+    dashboard:
+      rule: (Host(`traefik.localhost`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`)))
+      service: api@internal
+      entryPoints:
+        - websecure
+      tls: true
+      middlewares:
+        - dashboard-auth
+      # - replacepath-dashboard
+

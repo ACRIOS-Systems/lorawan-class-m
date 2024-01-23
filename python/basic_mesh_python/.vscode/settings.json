@@ -1,0 +1,8 @@
+{
+    "python.analysis.extraPaths": [
+        "../modules/lora_sim_lib",
+        "../modules/ns_chirpstack3_api",
+    ],
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "/home/samo/Desktop/Git/basic-mesh-python/loraRadioSim/wireshark/wireshark-lorawan-class-m"
+}

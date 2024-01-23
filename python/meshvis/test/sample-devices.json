@@ -1,0 +1,51 @@
+[{
+        "altitude": 0,
+        "children": [
+            "00:00:00:00:00:00:00:01",
+            "00:00:00:00:00:00:00:02"
+        ],
+        "description": "Central node",
+        "eui": "00:00:00:00:00:00:00:00",
+        "latitude": 49.189709475478544,
+        "longitude": 16.520564751632524,
+        "name": "Central",
+        "parent": [],
+        "state": "Idle",
+        "type": "Gateway"
+    },
+    {
+        "altitude": 0,
+        "children": [],
+        "description": "First node",
+        "eui": "00:00:00:00:00:00:00:01",
+        "latitude": 49.20343081214531,
+        "longitude": 16.50970640798482,
+        "name": "Child node 1",
+        "parent": "00:00:00:00:00:00:00:00",
+        "state": "Connected",
+        "type": "Child node"
+    },
+    {
+        "altitude": 0,
+        "children": [],
+        "description": "Second node",
+        "eui": "00:00:00:00:00:00:00:02",
+        "latitude": 49.175072717361616,
+        "longitude": 16.538552455866096,
+        "name": "Child node 2",
+        "state": "Error",
+        "type": "Child node"
+    },
+    {
+        "altitude": 0,
+        "children": [],
+        "description": "Third node",
+        "eui": "00:00:00:00:00:00:00:03",
+        "latitude": 49.175072717361616,
+        "longitude": 16.527352455866096,
+        "name": "Child node 3",
+        "parent": "00:00:00:00:00:00:00:00",
+        "state": "Unknown state",
+        "type": "Child node"
+    }
+]

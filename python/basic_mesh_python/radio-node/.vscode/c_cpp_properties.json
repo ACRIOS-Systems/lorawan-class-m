@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "name": "STM32",
+      "includePath": [
+        "Core/Inc",
+        "Drivers/BSP/STM32WLxx_Nucleo",
+        "Drivers/CMSIS/Device/ST/STM32WLxx/Include",
+        "Drivers/CMSIS/Include",
+        "Drivers/Radio",
+        "Drivers/STM32WLxx_HAL_Driver/Inc",
+        "Drivers/STM32WLxx_HAL_Driver/Inc/Legacy",
+        "Utilities/conf",
+        "Utilities/misc"
+      ],
+      "defines": [
+        "CORE_CM4",
+        "STM32WL55xx",
+        "USE_HAL_DRIVER"
+      ],
+      "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+      "configurationProvider": "ms-vscode.makefile-tools"
+    }
+  ],
+  "version": 4
+}

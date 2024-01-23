@@ -1,0 +1,154 @@
+# See https://www.chirpstack.io/network-server/install/config/ for a full
+# configuration example and documentation.
+#
+# This file is for the EU868 band. See the examples/ folder for more
+# configuration examples.
+
+[general]
+# Log level
+#
+# debug=5, info=4, warning=3, error=2, fatal=1, panic=0
+log_level=4
+
+
+
+[postgresql]
+dsn="postgres://chirpstack_ns:chirpstack_ns@postgresql/chirpstack_ns?sslmode=disable"
+
+[redis]
+url="redis://redis:6379"
+
+[network_server]
+net_id="000000"
+
+# Get downlink data delay.
+#
+# This is the time that ChirpStack Network Server waits between forwarding data to the
+# application-server and reading data from the queue. A higher value
+# means that the application-server has more time to schedule a downlink
+# queue item which can be processed within the same uplink / downlink
+# transaction.
+# Please note that this value has influence on the uplink / downlink
+# roundtrip time. Setting this value too high means ChirpStack Network Server will be
+# unable to respond to the device within its receive-window.
+# default 100ms
+get_downlink_data_delay="300ms"
+
+# Time to wait for uplink de-duplication.
+#
+# This is the time that ChirpStack Network Server will wait for other gateways to receive
+# the same uplink frame. Valid units are 'ms' or 's'.
+# Please note that this value has influence on the uplink / downlink
+# roundtrip time. Setting this value too high means ChirpStack Network Server will be
+# unable to respond to the device within its receive-window.
+# default 200ms
+deduplication_delay="600ms"
+
+
+[network_server.band]
+name="EU868"
+
+[network_server.network_settings]
+
+  # Installation margin (dB) used by the ADR engine.
+  #
+  # A higher number means that the network-server will keep more margin,
+  # resulting in a lower data-rate but decreasing the chance that the
+  # device gets disconnected because it is unable to reach one of the
+  # surrounded gateways.
+  installation_margin=25
+
+  # RX window (Class-A).
+  #
+  # Set this to:
+  # 0: RX1 / RX2
+  # 1: RX1 only
+  # 2: RX2 only
+  rx_window=0
+
+  # Disable ADR
+  #
+  # When set, this globally disables ADR.
+  disable_adr=false
+
+
+  # Max mac-command error count.
+  #
+  # When a mac-command is nACKed for more than the configured value, then the
+  # ChirpStack Network Server will stop sending this mac-command to the device.
+  # This setting prevents that the Network Server will keep sending mac-commands
+  # on every downlink in case of a malfunctioning device.
+  max_mac_command_error_count=3
+
+
+  [[network_server.network_settings.extra_channels]]
+  frequency=867100000
+  min_dr=0
+  max_dr=5
+
+  [[network_server.network_settings.extra_channels]]
+  frequency=867300000
+  min_dr=0
+  max_dr=5
+
+  [[network_server.network_settings.extra_channels]]
+  frequency=867500000
+  min_dr=0
+  max_dr=5
+
+  [[network_server.network_settings.extra_channels]]
+  frequency=867700000
+  min_dr=0
+  max_dr=5
+
+  [[network_server.network_settings.extra_channels]]
+  frequency=867900000
+  min_dr=0
+  max_dr=5
+
+
+  # Scheduler settings
+  #
+  # These settings affect the multicast, Class-B and Class-C downlink queue
+  # scheduler.
+  [network_server.scheduler]
+  # Scheduler interval
+  #
+  # The interval in which the downlink scheduler for multicast, Class-B and
+  # Class-C runs.
+  scheduler_interval="1s"
+
+    # Class-C settings.
+    [network_server.scheduler.class_c]
+    # Device downlink lock duration
+    #
+    # Contains the duration to lock the downlink Class-C transmissions
+    # after a preceeding downlink tx (per device).
+    device_downlink_lock_duration="2s"
+
+    # Gateway downlink lock duration.
+    #
+    # Contains the duration to lock the downlink Class-C transmissions
+    # after a preceeding downlink tx (per gateway). As half-duplex gateways
+    # can't receive when transmitting, this value can be used to avoid that
+    # a single gateway will transmit multiple frames directly after each other
+    # and because of that, unable to receive any uplinks.
+    gateway_downlink_lock_duration="0s"
+
+
+    # Multicast gateway delay.
+    #
+    # In case of a multi-gateway multicast downlink, this delay will added to
+    # the transmission time of each downlink to avoid collisions between overlapping
+    # gateways.
+    multicast_gateway_delay="2s"
+
+
+[network_server.gateway.backend.mqtt]
+server="tcp://mosquitto:1883"
+
+[join_server.default]
+server="http://chirpstack-application-server:8003"
+
+[geolocation_server]
+server="chirpstack-geolocation-server:8005"

@@ -1,0 +1,60 @@
+<mxfile host="app.diagrams.net" modified="2023-11-09T11:16:11.769Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="-OEMlWfGHi6kLULAq2Ea" version="22.0.8" type="device">
+  <diagram name="Page-1" id="fIDpOyRQobxb_MCxYIHS">
+    <mxGraphModel dx="1434" dy="911" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;endArrow=classic;endFill=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="QJhU5oRQL1Jb571ihN6a-34" target="QJhU5oRQL1Jb571ihN6a-56">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="1120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="640" y="1014" />
+              <mxPoint x="640" y="1120" />
+              <mxPoint x="250" y="1120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-34" value="&lt;div&gt;transmitting&lt;/div&gt;&lt;div&gt;OTAARegReq&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="500" y="968.75" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-35" value="If request sent" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="970" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="QJhU5oRQL1Jb571ihN6a-34">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="998.8" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=oval;endFill=1;" edge="1" parent="1" source="QJhU5oRQL1Jb571ihN6a-42">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="1120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-42" value="searchParent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="340" y="970" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-46" value="If timeout or&lt;br&gt;invalid response (HW failure)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="1055" width="175" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-49" value="&lt;div&gt;waitForPotential&lt;/div&gt;&lt;div&gt;ParentWindow&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="845" y="968.75" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="QJhU5oRQL1Jb571ihN6a-51" target="QJhU5oRQL1Jb571ihN6a-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-51" value="remove the queued events and QUEUE the potentialParent node time slot" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="967.5" width="120" height="62.5" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="QJhU5oRQL1Jb571ihN6a-34" target="QJhU5oRQL1Jb571ihN6a-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-57" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QJhU5oRQL1Jb571ihN6a-56" target="QJhU5oRQL1Jb571ihN6a-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJhU5oRQL1Jb571ihN6a-56" value="&lt;div&gt;idleState&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="190" y="970" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,5 @@
+- this tool is used for generation of psql command for editing the default admin password of chirpstack-app-server
+- attempts of creating this tool in python failed due to incompatibilities between different hashing libraries
+- usage: ./generate.sh mySecretPassword
+- output: psql -U chirpstack_as -c "update public.user set password_hash = 'PBKDF2\$sha512\$100000\$eqyYs7hBYv5q8hBPAA2mgg==\$t/7jvYkeLA+uPJi4jpB66rompxDqBocdfRM1THX+H/xigQO1/JbIn5CZF93+iynjvwGNKxOQPojpcSUeV7noeA==' where email = 'admin';"
+- note: '$' sign has to be escaped!

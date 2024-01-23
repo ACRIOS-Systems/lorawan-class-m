@@ -1,0 +1,19 @@
+{
+    "cortex-debug.armToolchainPath": "/usr/bin",
+    "cortex-debug.openocdPath": "/usr/bin/openocd",
+    "files.associations": {
+        "main.h": "c",
+        "radio_conf.h": "c",
+        "ping_pong.h": "c",
+        "radio.h": "c",
+        "stm32wlxx_nucleo.h": "c",
+        "stm32wlxx_nucleo_errno.h": "c",
+        "radio_driver.h": "c",
+        "string.h": "c",
+        "stdio.h": "c",
+        "stddef.h": "c",
+        "stm32wlxx_hal.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled",
+    "cmake.configureOnOpen": false
+}

@@ -1,0 +1,35 @@
+syntax  = "proto3";
+
+package storage;
+
+import "gw/gw.proto";
+
+
+message DownlinkFrame {
+    // Token.
+    uint32 token = 1;
+
+    // DevEUI.
+    bytes dev_eui = 2;
+
+    // Device queue item ID.
+    int64 device_queue_item_id = 3;
+
+    // Multicast Group ID.
+    bytes multicast_group_id = 4;
+
+    // Multicast queue item ID.
+    int64 multicast_queue_item_id = 5;
+
+    // Downlink frames.
+    gw.DownlinkFrame downlink_frame = 6;
+
+    // Routing Profile ID.
+    bytes routing_profile_id = 7;
+
+    // Encrypted FOpts (LoRaWAN 1.1).
+    bool encrypted_fopts = 8;
+
+    // Network session encryption key (for FOpts).
+    bytes nwk_s_enc_key = 9;
+}

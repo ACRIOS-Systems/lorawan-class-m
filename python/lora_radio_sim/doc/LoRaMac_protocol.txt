@@ -1,0 +1,80 @@
+Implemented 4 incoming simulator commands and 3 outgoing events
+
+incoming (Python->C):
+- all incoming commands answer e.g. ":TIMEOUT DONE\n" except ":\n" command
+	- timeout (RX or TX)
+		":TIMEOUT\n"
+		
+	- CRC error in RXed frame
+		":RX_DONE,CRC_ERROR\n"
+	- received 3 bytes
+		":RX_DONE,size=3,data=AA:BB:CC\n"
+	- SNR and RSSI is faculative
+		":RX_DONE,size=2,data=AA:BB,SNR=3,RSSI=30\n"
+		
+	- transmission is done
+		":TX_DONE\n"
+		
+	- execute 1000ms RTC ticks
+		":TICK,steps=1000\n"
+		
+	- execute single tick, answer is '.\n'
+		":\n
+    
+    
+outgoing (C->Python):
+	- join request example
+		":TX,
+			ts=3,
+			frequency=868500000,
+			preamble_length=8,
+			header_type_explicit=1,
+			payload_length=23,
+			crc_mode_on=1,
+			iq_normal=1,
+			spreading_factor=12,
+			bandwidth_kHz=125,
+			coding_rate=4_5,
+			low_data_rate=1power=13,
+			ramp_time=40,
+			tx_timeout=0,
+			symbol_timeout=0,
+			size=23,
+			data=00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:07:00:D9:BB:81:93:"
+		
+	- start reception
+		":RX,
+			ts=5513,
+			frequency=868100000,
+			preamble_length=8,
+			header_type_explicit=1,
+			payload_length=64,
+			crc_mode_on=0,
+			iq_normal=0,
+			spreading_factor=12,
+			bandwidth_kHz=125,
+			coding_rate=4_5,
+			low_data_rate=1,
+			rx_timeout=13,
+			symbol_timeout=1431803271"
+			
+    - radio turned off
+    	":IDLE,ts=5513"
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	

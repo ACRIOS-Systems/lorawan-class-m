@@ -1,0 +1,80 @@
+version: "3"
+
+services:
+
+  sqlpad:
+    extends:
+      file: base-docker-compose.yml
+      service: sqlpad
+    depends_on:
+      - postgresql
+
+  chirpstack-network-server:
+    extends:
+      file: base-docker-compose.yml
+      service: chirpstack-network-server
+    build:
+      context: ./chirpstack-network-server
+      #dockerfile: Dockerfile-debug # USE FOR BUILD + DEBUG
+      dockerfile: Dockerfile-devel # USE FOR BUILD + RUN WITH NO DEBUG
+    command: make serve # USE FOR BUILD + RUN WITH NO DEBUG
+    volumes:
+      - ./chirpstack-network-server:/chirpstack-network-server
+    ports:
+      - 127.0.0.1:4000:4000
+
+
+  chirpstack-application-server:
+    extends:
+      file: base-docker-compose.yml
+      service: chirpstack-application-server
+
+  chirpstack-gateway-bridge:
+    extends:
+      file: base-docker-compose.yml
+      service: chirpstack-gateway-bridge
+      
+  postgresql:
+    extends:
+      file: base-docker-compose.yml
+      service: postgresql
+
+  redis:
+    extends:
+      file: base-docker-compose.yml
+      service: redis
+      
+  mosquitto:
+    extends:
+      file: base-docker-compose.yml
+      service: mosquitto
+
+  wireguard:
+    extends:
+      file: base-docker-compose.yml
+      service: wireguard
+
+#  reverse-proxy:
+#    image: traefik:v2.4.2
+#    restart: unless-stopped
+#    ports:
+#      - "127.0.0.1:80:80"
+#      - "127.0.0.1:443:443"
+#    command:
+#            - "--configFile=/etc/traefik/traefik.yaml"
+#            - "--providers.docker.network=proxy"
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - ./configuration/traefik/traefik.yml:/etc/traefik/traefik.yaml
+#      - ./configuration/traefik/dynamic:/etc/traefik/dynamic
+
+networks:
+  local:
+    external: False
+    ipam:
+      config:
+        - subnet: 172.${INST_NET_NUM}.255.0/24
+
+  proxy:
+    external: True
+

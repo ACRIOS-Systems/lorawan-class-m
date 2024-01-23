@@ -1,0 +1,60 @@
+{
+    "version": "0.2.0",
+
+    "inputs": [
+        {
+            "id": "promptTime",
+            "type": "promptString",
+            "description": "Type the time to be simulated in seconds (default 5min)",
+            "default": "300"
+        },
+        {
+            "id": "pickCSV",
+            "type": "command",
+            // The "Command Variable" extension by "rioj7" is needed
+            "command": "extension.commandvariable.file.pickFile",
+            "args": {
+                "description": "Choose the scenario to be run",
+                "include": "Scenarios/*",
+                "display": "fileName",
+                
+            },
+        }
+    ],
+
+    "configurations": [
+        {
+            "name": "Run simulation (Prompt scenario and simulation time)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Simulation.py",
+            "args": [
+                "--csv", "${input:pickCSV}",
+                "--sim-time", "${input:promptTime}",
+                "--chirpstack"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "sudo": true
+        },
+        {
+            "name": "Simulator CLI help",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Simulation.py",
+            "args": [
+                "-h"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Device setup tool",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Scenarios/configurator/DeviceSetup.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}

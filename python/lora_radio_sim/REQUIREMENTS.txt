@@ -1,0 +1,12 @@
+geopy
+requests
+numpy
+matplotlib
+protobuf==3.12.4
+chirpstack-api==3.11.1
+paho-mqtt
+psycopg2-binary
+termcolor
+
+# for GUI app with map window
+tkintermapview

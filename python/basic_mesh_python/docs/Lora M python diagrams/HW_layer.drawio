@@ -1,0 +1,69 @@
+<mxfile host="app.diagrams.net" modified="2023-11-14T15:12:49.414Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="lM-_LWXXhIJSTRP3d28w" version="22.1.0" type="device">
+  <diagram name="Page-1" id="wE2VaQrBLKT-QMtXjE58">
+    <mxGraphModel dx="1728" dy="929" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="gM5p0c_OrY3NejRkYbp8-16" target="gM5p0c_OrY3NejRkYbp8-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-16" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="270" width="250" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="gM5p0c_OrY3NejRkYbp8-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="329" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;endArrow=none;endFill=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="gM5p0c_OrY3NejRkYbp8-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="381" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-18" value="&lt;div&gt;NODE&lt;/div&gt;&lt;div&gt;(Python-mesh)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="302.5" width="175" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-19" value="PC" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="272.5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="gM5p0c_OrY3NejRkYbp8-27" target="gM5p0c_OrY3NejRkYbp8-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-27" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="270" width="250" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="gM5p0c_OrY3NejRkYbp8-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="480" y="329" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;endArrow=none;endFill=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="gM5p0c_OrY3NejRkYbp8-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="480" y="381" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-24" value="&lt;div&gt;SX1261 RADIO&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="302.5" width="175" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-28" value="microcontroller" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="280" y="272.5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-33" value="UART" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="490" y="340" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-41" value="radio command" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="300" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-42" value="radio command" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="350" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-43" value="IRQ message" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="560" y="350" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gM5p0c_OrY3NejRkYbp8-44" value="IRQ message" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="415" y="300" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

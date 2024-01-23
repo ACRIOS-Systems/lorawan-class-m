@@ -1,0 +1,70 @@
+################################################################
+# Global configuration
+################################################################
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+################################################################
+# EntryPoints configuration
+################################################################
+
+# EntryPoints definition
+#
+# Optional
+#
+entryPoints:
+  web:
+    address: :80
+  websecure:
+    address: :443
+#  vpn-web:
+#    address: :81
+#  vpn-websecure:
+#    address: :444
+
+#  proxy:
+#    address: :5000
+#    proxyProtocol:
+#      trustedIPs:
+#        - "31.31.73.53/32"
+#  lora1:
+#    address: :1700/udp
+#  lora2:
+#    address: :1701/udp
+log:
+  level: WARN
+#  filePath: log/traefik.log
+#  format: json
+
+#accessLog:
+#  filePath: /path/to/log/log.txt
+#  format: json
+
+metrics:
+  prometheus:
+    addServicesLabels: true
+    manualRouting: true
+    #    entryPoint: websecure
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: janik@acrios.com
+      storage: letsencrypt.json
+      httpChallenge:
+        entryPoint: web
+
+api:
+  #insecure: true
+  dashboard: true
+providers:
+  # Enable Docker configuration backend
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    #
+#    defaultRule: Host(`{{ normalize .Name }}.docker.localhost`)
+    exposedByDefault: false
+
+  file:
+    directory: "/etc/traefik/dynamic"
